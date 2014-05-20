@@ -1,18 +1,19 @@
-class edgeNode:
+class Vertex:
 	def __init__(self,key):
 		self.key = key
 		self.neighbors = {}
 	def addNeighbor(self, v, weight=1):
-		self.neighors[v] = weight
+		self.neighbors[v] = weight
 	def getWeight(self, key):
 		return self.neighbors[key]
 	def __str__(self):
-		return str(self.key)+": "+str([x for x in self.neighbors])
+		return str(self.key)+": "+" ".join([str(x) for x in self.neighbors])
 
 class Graph:
-	def __init__(self):
+	def __init__(self, directed=False):
 		self.vertices = {}
 		self.numVertices = 0
+		self.directed = directed
 	def addVertex(self, key):
 		self.vertices[key] = Vertex(key)
 		self.numVertices += 1
@@ -21,14 +22,16 @@ class Graph:
 			self.addVertex(f)
 		if t not in self.vertices:
 			self.addVertex(t)
-		self.vertices[f].addNeighbor(self.vertices[t], weight)
+		self.vertices[f].addNeighbor(t, weight)
+		if not self.directed:
+			self.vertices[t].addNeighbor(f, weight)
+	def getNeighbors(self, key):
+		return self.vertices[key].neighbors.keys();
 	def __contains__(self, n):
 		return n in self.vertices
 	def __iter__(self):
 		return iter(self.vertices.values())
 	def __str__(self):
-		s = ""
-		for v in self.vertices:
-			s += str(v)+"\n"
+		s = "\n".join([str(v) for v in self])
 		return s
 
