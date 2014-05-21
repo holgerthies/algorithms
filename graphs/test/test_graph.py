@@ -41,6 +41,15 @@ class GraphTests(unittest.TestCase):
 		G.addEdge(4,1)
 		G.addVertex(3)
 		self.failUnlessEqual(str(G), "1: 2 4\n2: 1\n3: \n4: 1")
+	def testGetItem(self):
+		G = graph.Graph()
+		G.addEdge(1,2)
+		G.addEdge(2,1)
+		G.addEdge(4,1)
+		G.addVertex(3)
+		self.failUnless(2 in G[1])
+		self.failUnless(4 in G[1])
+
 def main():
 	unittest.main()
 

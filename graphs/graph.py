@@ -8,6 +8,10 @@ class Vertex:
 		return self.neighbors[key]
 	def __str__(self):
 		return str(self.key)+": "+" ".join([str(x) for x in self.neighbors])
+	def __contains__(self, n):
+		return n in self.neighbors.keys()
+	def __iter__(self):
+		return iter(self.neighbors.keys())
 
 class Graph:
 	def __init__(self, directed=False):
@@ -34,4 +38,6 @@ class Graph:
 	def __str__(self):
 		s = "\n".join([str(v) for v in self])
 		return s
+	def __getitem__(self, key):
+		return self.vertices[key] 
 
