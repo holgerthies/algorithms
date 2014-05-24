@@ -19,7 +19,9 @@ class DfsTests(unittest.TestCase):
 		G.addEdge(2,8)
 		G.addEdge(9,10)
 		processingOrder = []
-		processFun = lambda v: processingOrder.append(v)
+		def processFun(v, visited):
+			if v not in visited:
+				processingOrder.append(v)
 		dfs.dfs(G, 1, processFun, lambda v : v)
 		self.failUnlessEqual(processingOrder, [1,2,8,9,10,7,6,3,4,5])
 

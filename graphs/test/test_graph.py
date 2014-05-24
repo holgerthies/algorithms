@@ -49,6 +49,16 @@ class GraphTests(unittest.TestCase):
 		G.addVertex(3)
 		self.failUnless(2 in G[1])
 		self.failUnless(4 in G[1])
+	def testDirected(self):
+		G = graph.Graph(True)
+		G.addEdge(1,2)
+		G.addEdge(2,1)
+		G.addEdge(4,1)
+		G.addVertex(3)
+		self.failUnless(2 in G[1])
+		self.failUnless(1 in G[2])
+		self.failIf(4 in G[1])
+		self.failUnless(1 in G[4])
 
 def main():
 	unittest.main()
