@@ -85,7 +85,10 @@ class Graph:
 			ax.text(x[i],y[i],v)
 			for u in self.vertices[v].neighbors:
 				j = self.vertices.keys().index(u)
-				plt.plot((x[i],x[j]), (y[i],y[j]), '-', color='blue')
+				if self.directed:
+					plt.quiver(x[i],y[i], x[j]-x[i]-0.1,y[j]-y[i]-0.1, color='blue', scale_units='xy', angles='xy', scale=1)
+				else:
+					plt.plot((x[i],x[j]), (y[i],y[j]), '-', color='blue')
 			c_inner=plt.Circle((x[i], y[i]),0.3, color='white', fill=True, zorder=2)
 			c_border = plt.Circle((x[i], y[i]),0.3, fill=False, zorder=3)
 			fig.gca().add_artist(c_inner)
