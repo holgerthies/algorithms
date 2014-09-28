@@ -7,8 +7,11 @@ class heapElement(object):
 		self.priority = priority
 		self.removed = False
 
-	def __compare__(self, other):
-		return self.priority.__compare__(other)
+	def __cmp__(self, other):
+		return self.priority.__cmp__(other.priority)
+
+	def __repr__(self):
+		return "heapElement(%s, %s, %d, %s)" % (self.id, self.value, self.priority, self.removed)
 
 
 
@@ -33,16 +36,16 @@ class BinaryHeap(PriorityQueue):
 		return 2*pos+2
 
 	def _upheap(self, pos):
-		if self.pos == 0: return
+		if pos == 0: return
 		parent = self._parent(pos)
 		if self._heap[pos] > self._heap[parent]:
 			self._heap[pos], self._heap[parent] = self._heap[parent], self._heap[pos]
 			self._upheap(parent)
 
 	def _downheap(self, pos):
-		if pos >= len(self._heap): return 
+		if pos >= len(self._heap)//2: return 
 		left, right = self._left(pos), self._right(pos)
-		max_child = left if self._heap[left] > self._heap[right] else right
+		max_child = left if right >= len(self._heap) or self._heap[left] > self._heap[right] else right
 		if self._heap[max_child] > self._heap[pos]:
 			self._heap[pos], self._heap[max_child] = self._heap[max_child], self._heap[pos]
 			self._downheap(max_child)
@@ -52,7 +55,7 @@ class BinaryHeap(PriorityQueue):
 		if id in self._elements:
 			self.delete(id)
 		element = heapElement(id, value, priority)
-		self.elements[id] = element
+		self._elements[id] = element
 		self._heap.append(element)
 		self._upheap(len(self._heap)-1)
 
@@ -64,22 +67,30 @@ class BinaryHeap(PriorityQueue):
 
 	def pop(self):
 		while self._heap:
-			element = self._heap[0].value
+			element = self._heap[0]
 			self._heap[0] = self._heap[-1]
 			del self._heap[-1]
 			self._downheap(0)
 			if not element.removed:
 				del self._elements[element.id]
-				return element
+				return element.value
 		raise KeyError('Can not pop from empty heap')
 
 	def peak(self):
 		return self._heap[0].value
 
-	def update(self, id, new_priority):
-		element = self._elements[id]
+	def get(self, id):
+		if id in self:
+			element = self._elements[id]
+			return element
+		raise KeyError(id + ' not in Heap')
+
+	def __contains__(self, id):
+		return id in self._elements
+
+	def update(self, id, new_value, new_priority):
 		self.delete(id)
-		self.insert(id, element.value, new_priority)
+		self.insert(id, new_value, new_priority)
 
 
 
