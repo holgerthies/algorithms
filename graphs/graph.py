@@ -49,6 +49,12 @@ class Graph:
 		if not self.directed:
 			self.vertices[t].addNeighbor(f, weight)
 
+	def getEdges(self):
+		edges = set()
+		for v in self:
+			for w in self[v].neighbors:
+				edges.add((v,w, self[v].getWeight(w)))
+
 	def getNeighbors(self, key):
 		return self.vertices[key].neighbors.keys()
 
